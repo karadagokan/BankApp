@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Blank</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div th:replace="sidebar"></div>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:replace="topbar"></div>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-4 text-gray-800">My Transactions</h1>
+
+            </div>
+
+            <hr style="margin-top: -20px;">
+
+            <div>
+                <div style="margin-left: 24px;border:  groove;padding-left: 5px;padding-top: 3px;">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>First Name : <span th:text="${customersProfile.customerFirstName}"></span></label><br>
+                            <label>Last Name : <span th:text="${customersProfile.customerLastName}"></span></label><br>
+                            <label>Salary : <span th:text="${customersProfile.salary}"></span></label><br>
+                        </div>
+                        <div style="padding-left: 50px;margin-top: 20px;" class="col-sm-6">
+                            <label>Account Number :<span th:text="${#objects.nullSafe(customersProfile?.account?.accountNumber, '  You dont have an account yet')}"></span></label><br>
+                            <label>Balance :<span th:text="${#objects.nullSafe(customersProfile?.account?.balance, '  You dont have an account yet')}"></span></label><br>
+                            <ul style="list-style-type: none">
+                            <span th:switch="${customersProfile.accountRequest}">
+                                <li th:case="2" style="margin-left: -50px;margin-top: 5px;">
+                                    <a style="margin-left: 20px;" id="withdrawButton" >
+                                        <button class="btn btn-info" data-target="#withdrawModal" data-toggle="modal">Withdraw Money</button>
+                                    </a>
+                                    <a style="margin-left: 20px;" id="depositButton" href="#">
+                                        <button class="btn btn-info" data-target="#depositMoneyModal" data-toggle="modal" >Deposit Money</button>
+                                    </a>
+                                    <a style="margin-left: 20px;" id="sendButton" href="#">
+                                        <button class="btn btn-info" data-target="#sendMoneyModal" data-toggle="modal">Send Money</button>
+                                    </a>
+
+
+                                </li>
+                                <li th:case="*" style="margin-left: -50px;margin-top: 5px;">
+                                    <a style="margin-left: 20px;" id="withdrawButton" >
+                                        <button disabled="disabled" class="btn btn-info" data-target="#withdrawModal" data-toggle="modal">Withdraw Money</button>
+                                    </a>
+                                    <a style="margin-left: 20px;" id="depositButton" href="#">
+                                        <button disabled="disabled" class="btn btn-info" data-target="#depositMoneyModal" data-toggle="modal" >Deposit Money</button>
+                                    </a>
+                                    <a style="margin-left: 20px;" id="sendButton" href="#">
+                                        <button disabled="disabled" class="btn btn-info" data-target="#sendMoneyModal" data-toggle="modal">Send Money</button>
+                                    </a>
+
+
+                                </li>
+                                </span>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+
+                <ul style="list-style-type: none">
+                    <li>
+                        <a class="btn btn-warning" id="editButton" th:href="@{/customers/findById/(id=${customersProfile.customerId})}">Edit My Profile</a>
+                        
+                        <span th:switch="${customersProfile.accountRequest}" >
+                        <a th:href="@{/customers/accountRequestUpdate/(id=${customersProfile.customerId})}"><button th:case="0" 					class="btn btn-success">Send an Account Opening Request</button></a>
+                        <a th:href="@{/customers/accountRequestUpdate/(id=${customersProfile.customerId})}"><button th:case="1" disabled="disabled" class="btn btn-secondary">Send an Account Opening Request</button></a>
+                        <a th:href="@{/customers/accountRequestUpdate/(id=${customersProfile.customerId})}"><button th:case="2" disabled="disabled" class="btn btn-secondary">Send an Account Opening Request</button></a>
+                        </span>
+                        
+                        
+                                              
+                    </li>
+
+                </ul>
+                <hr style="margin-top: 50px;">
+                <br><br>
+                <div style="margin: 22px;">
+                    <label>Sum : <span th:text="${#objects.nullSafe(customersProfile?.credit?.sum, '-')}"></span></label><br>
+                    <label>Mouthly Payment : <span th:text="${#objects.nullSafe(customersProfile?.credit?.mountlyPayment, '-')}"></span></label><br>
+                    <label>Start Date : <span th:text="${#objects.nullSafe(customersProfile?.credit?.startDate, '-')}"></span></label><br>
+                    <label>End Date : <span th:text="${#objects.nullSafe(customersProfile?.credit?.endDate, '-')}"></span></label><br>
+                    <label>Paid : <span th:text="${#objects.nullSafe(customersProfile?.credit?.paid, '-')}"></span></label>
+                </div>
+                <a style="margin-left: 20px;" href="#">
+                    <button data-target="#payCreditModal" data-toggle="modal" class="btn btn-primary">Pay</button>
+                </a>
+               <span th:switch="${customersProfile.creditRequest}">
+                <a style="margin-left: 10px;"  id="creditRequestButton">
+                            <button th:case="0" class="btn btn-success" data-target="#creditRequestModal" data-toggle="modal" >Credit Request</button>
+                        </a>
+                         <a style="margin-left: 10px;"  id="creditRequestButton">
+                            <button th:case="1"  disabled="disabled" class="btn btn-secondary" data-target="#creditRequestModal" data-toggle="modal">Credit Request</button>
+                        </a>
+                         <a style="margin-left: 10px;"  id="creditRequestButton">
+                            <button th:case="2" disabled="disabled" class="btn btn-secondary" data-target="#creditRequestModal" data-toggle="modal">Credit Request</button>
+                        </a>
+                        </span>
+                        
+
+            </div>
+            
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+ <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/update}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <div class="form-group">
+            <input type="text" class="form-control" id="idEdit" name="customerId" readonly hidden="">
+          </div>
+
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">First Name:</label>
+            <input type="text" class="form-control" id="firstNameEdit" name="customerFirstName" required>
+          </div>
+
+        <div class="form-group">
+          <label for="lastNameEdit" class="col-form-label">Last Name:</label>
+          <input type="text" class="form-control" id="lastNameEdit" name="customerLastName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="salaryEdit" class="col-form-label">Salary:</label>
+          <input type="text" class="form-control" id="salaryEdit" name="salary" required>
+        </div>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<div class="modal fade" id="payCreditModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/payCredit}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Pay Credit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	
+
+		<div class="form-group">
+          <input type="text" class="form-control" id="customerId" name="customerId" th:value="${customersProfile.customerId}" hidden="" >
+        </div>
+  
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="paid" name="paid" placeholder="Pay Amount"  required>
+        </div>
+        
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<div class="modal fade" id="creditRequestModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/creditRequest}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModLabel">Credit Request</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	
+
+		<div class="form-group">
+          <input type="text" class="form-control" id="customerId" name="customerId" th:value="${customersProfile.customerId}" hidden="" >
+        </div>
+
+                    
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">How much do you want credit?</label>
+            <input type="text" class="form-control" name="sum" required="required">
+          </div>        
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+        
+ <div class="modal fade" id="withdrawModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/withdrawAmount}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Withdraw</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	
+
+		<div class="form-group">
+          <input type="text" class="form-control" id="customerId" name="customerId" th:value="${customersProfile.customerId}" hidden="" >
+        </div>
+
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">Balance:</label>
+            <input type="text" class="form-control" th:value="${#objects.nullSafe(customersProfile?.account?.balance, '  You dont have an account yet')}" readonly="readonly">
+          </div>
+          
+         
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="withdrawAmount" name="withdrawAmount" placeholder="Withdraw Amount"  required>
+        </div>
+        
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<div class="modal fade" id="depositMoneyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/depositMoney}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Deposit Money</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	
+
+		<div class="form-group">
+          <input type="text" class="form-control" id="customerId" name="customerId" th:value="${customersProfile.customerId}" hidden="" >
+        </div>
+
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">Balance:</label>
+            <input type="text" class="form-control" th:value="${#objects.nullSafe(customersProfile?.account?.balance, '  You dont have an account yet')}" readonly="readonly">
+          </div>
+          
+         
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="withdrawAmount" name="withdrawAmount" placeholder="Deposit Amount"  required>
+        </div>
+        
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<div class="modal fade" id="sendMoneyModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+ <form th:action="@{/customers/sendMoney}" method="put">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Send Money</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	
+
+		<div class="form-group">
+          <input type="text" class="form-control" id="customerId" name="customerId" th:value="${customersProfile.customerId}" hidden="" >
+        </div>
+
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">Balance:</label>
+            <input type="text" class="form-control" th:value="${#objects.nullSafe(customersProfile?.account?.balance, '  You dont have an account yet')}" readonly="readonly">
+          </div>
+          
+          <div class="form-group">
+            <label for="firstNameEdit" class="col-form-label">Account No:</label>
+            <input type="text" class="form-control" placeholder="Doesn't matter number (Representation)">
+          </div>
+          
+         
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="withdrawAmount" name="withdrawAmount" placeholder="Send Amount"  required>
+        </div>
+        
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+        <!-- Footer -->
+        <div th:replace="footer"></div>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div th:replace="logoutModal"></div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+<script src="js/profile.js"></script>
+
+</body>
+
+</html>
