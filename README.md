@@ -15,8 +15,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Basit bir spring boot uygulaması kullanıcılar USER ve ADMIN olarak iki role sahipler ve görev dağılımları var. User istekte bulunduğunda ADMIN işlemler yapıyor.
-Proje geliştirilebilir sadece temel işlemler yapılmıştır. Geliştirmek sizin elinizde :)
+It is a simple spring boot application. Users have two roles as User and Admin . Admin takes action when the users makes requests. The project can be developed. Only basic operations are done. It is in your hands to improve :)
 
 ADMIN
 ![Admin](https://user-images.githubusercontent.com/55664312/96185867-3ae14780-0f43-11eb-813f-aacb599bb2ac.png)
@@ -27,8 +26,7 @@ USER
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-Giriş sayfasından kullanıcı oluşturduktan sonra admin yapmak istediğiniz kullanıcıyı veritabanından değiştirmelisiniz. Default olarak kişiler USER olarak atanır.
+After a user creating from the home page then you must change the user you want to make admin from the database.
 
 ![RoleAdmınChange](https://user-images.githubusercontent.com/55664312/96185872-3d43a180-0f43-11eb-994d-b55f00351f51.png)
 
