@@ -9,7 +9,7 @@
   <h3 align="center">BankApp</h3>
 
   <p align="center">
-   My first spring boot project
+   Spring boot project
   </p>
 
 
